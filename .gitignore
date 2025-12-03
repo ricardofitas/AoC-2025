@@ -1,0 +1,23 @@
+# Rust build artifacts
+**/target/
+
+# Python / Mojo virtual envs
+**/.venv/
+venv/
+
+# Python cache
+**/__pycache__/
+*.pyc
+
+# Editor / OS junk
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+Desktop.ini
+
+# Qiskit / debug outputs
+*_output.txt
+
+# Advent of Code puzzle input files
+**/input.txt
