@@ -1,0 +1,69 @@
+AoC 2025 - Day 3 Part 1 Timing Summary
+
+Problem:
+--------
+For each bank (line of digits), choose exactly two batteries (positions i < j).
+The bank's joltage is the two-digit number formed by digits[i] as tens and digits[j] as ones.
+Find the maximum possible joltage for each bank, then sum across all banks.
+
+Final answer for my input:
+  17493
+
+
+RUST (debug / dev profile, no RUSTFLAGS)
+----------------------------------------
+Output:
+  17493
+Timing:
+  Time: 1.305 ms   (initial debug run)
+
+
+RUST (RUSTFLAGS="-C target-cpu=native", --release, with Rayon stress test)
+---------------------------------------------------------------------------
+Output:
+  17493
+
+Single run timing:
+  Time: 0.121 ms
+
+CPU stress test (parallel via Rayon):
+  Setup:
+    10,000 tasks (each solving all banks from the same input)
+  Output:
+    dummy sum: 174930000
+  Timing:
+    Parallel time (10000 tasks): 60.973 ms
+
+
+MOJO (WSL, string-to-digit + suffix-max implementation)
+-------------------------------------------------------
+Output:
+  17493
+
+Single run timing:
+  Single run time (Mojo, Day 3.1): 0.7885760023782495 ms
+
+CPU stress test:
+  Iterations: 1000
+  Dummy sum: 17493000
+  Total time: 511.2156249997497 ms
+  Average per run: 0.5112156249997497 ms
+
+
+PYTHON + QISKIT (classical + toy max-pair puzzle circuit)
+---------------------------------------------------------
+Output:
+  17493
+
+Classical solve timing (full AoC computation in Python):
+  Classical time: 3.815 ms
+
+Toy max-pair puzzle circuit:
+  - A small conceptual circuit that encodes the idea of "choosing the best pair"
+    among a few candidate positions.
+  - It marks one flag qubit corresponding to the 'best' pair in a toy scenario.
+
+Simulator timing (puzzle circuit only):
+  Top measurement results (example):
+    [('001', 1024)]
+  Simulator time: 16.003 ms

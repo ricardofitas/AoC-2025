@@ -1,0 +1,71 @@
+AoC 2025 - Day 2 Part 2 Timing Summary
+
+Problem:
+--------
+Sum all invalid IDs across the given ranges, where an invalid ID is a decimal number
+whose digits are some sequence repeated at least twice (A repeated k >= 2 times),
+e.g. 12341234, 123123123, 1212121212, 1111111.
+
+Final answer for my input:
+  55647141923
+
+
+RUST (debug / dev profile, no RUSTFLAGS)
+----------------------------------------
+Output:
+  55647141923
+Timing:
+  Time: 414.669 ms   (earlier debug run)
+
+
+RUST (RUSTFLAGS="-C target-cpu=native", --release, with Rayon stress test)
+---------------------------------------------------------------------------
+Output:
+  55647141923
+
+Single run timing:
+  Earlier run: 87.202 ms
+  Latest run:  100.249 ms
+
+CPU stress test (parallel via Rayon):
+  Setup:
+    10,000 tasks (copies of the input) in parallel
+  Output:
+    dummy sum: 556471419230000
+  Timing:
+    Parallel time (10000 tasks): 184008.792 ms
+
+
+MOJO (WSL, numeric repeated-block implementation)
+-------------------------------------------------
+Output:
+  55647141923
+
+Single run timing:
+  Single run time (Mojo, Day 2.2): 90.00397899944801 ms
+
+CPU stress test:
+  Iterations: 50
+  Dummy sum: 2782357096150
+  Total time: 4417.111189002753 ms
+  Average per run: 88.34222378005506 ms
+
+
+PYTHON + QISKIT (classical + repeat-pattern puzzle circuit)
+-----------------------------------------------------------
+Output:
+  55647141923
+
+Classical solve timing (full AoC computation in Python):
+  Classical time: 1245.574 ms
+
+Repeat-pattern puzzle circuit:
+  - Builds a small abstract circuit representing:
+      "some bit pattern A repeated at least twice" (here, 3 copies of a 2-bit pattern).
+  - Compares block 0 vs block 1 and block 0 vs block 2 using ancilla qubits.
+  - Flips a flag qubit if all comparisons match (all blocks equal).
+
+Simulator timing (puzzle circuit only):
+  Top measurement results (example):
+    [('1010101', 1024)]
+  Simulator time: 15.673 ms
