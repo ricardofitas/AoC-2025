@@ -1,0 +1,77 @@
+AoC 2025 - Day 5 Part 1 Timing Summary
+
+Problem:
+--------
+The database contains:
+  - A list of inclusive fresh ID ranges of the form a-b.
+  - A blank line.
+  - A list of available ingredient IDs, one per line.
+
+An ingredient ID is considered FRESH if it lies within at least one of the
+fresh ID ranges (ranges can overlap). We must count how many of the available
+IDs are fresh.
+
+Final answer for my input:
+  563
+
+
+RUST (debug / dev profile, no RUSTFLAGS)
+----------------------------------------
+Output:
+  563
+Timing:
+  Time: 0.884 ms   (initial debug run)
+
+
+RUST (RUSTFLAGS="-C target-cpu=native", --release, with Rayon stress test)
+---------------------------------------------------------------------------
+Output:
+  563
+
+Single run timing (optimized):
+  Time: 0.161 ms
+
+CPU stress test (parallel via Rayon):
+  Setup:
+    10,000 tasks (each solving the full Day 5.1 problem)
+  Output:
+    dummy sum: 5630000
+  Timing:
+    Parallel time (10000 tasks): 105.856 ms
+
+
+MOJO (WSL, range parsing + membership check)
+--------------------------------------------
+Output:
+  563
+
+Single run timing:
+  Single run time (Mojo, Day 5.1): 0.28424602351151407 ms
+
+CPU stress test:
+  Iterations: 1000
+  Dummy sum: 563000
+  Total time: 267.01742099248804 ms
+  Average per run: 0.26701742099248804 ms
+
+
+PYTHON + QISKIT (classical + toy fresh-range puzzle circuit)
+------------------------------------------------------------
+Output:
+  563
+
+Classical solve timing (full AoC computation in Python):
+  Classical time: 6.109 ms
+
+Toy fresh-range puzzle circuit:
+  - Encodes the idea that an ID is 'fresh' if it lies in at least one of two toy ranges.
+  - Uses:
+      * 1 'id' qubit
+      * 2 'range' qubits
+      * 1 'flag' qubit
+  - Applies CCX gates to mark the flag when id == 1 and (range0 == 1 OR range1 == 1).
+
+Simulator timing (puzzle circuit only):
+  Top measurement results (example):
+    [('0', 1024)]
+  (Simulator time printed in console output.)
