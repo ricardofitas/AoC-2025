@@ -1,0 +1,97 @@
+AoC 2025 - Day 6 Part 2 Timing Summary
+
+Story / Problem (Trash Compactor - Cephalopod Math, Right-to-Left):
+------------------------------------------------------------------
+Cephalopod math is written in vertical columns, read right-to-left:
+
+- The worksheet is a wide grid of characters.
+- Each problem occupies a contiguous block of columns.
+- Inside each block:
+    * Each column is a separate number.
+    * Digits for that number are stacked top-to-bottom in that column.
+- The bottom-most row containing '+' or '*' is the operator row.
+- Problems are separated by one or more columns that are all spaces.
+- For each problem:
+    * For every column in the block, read digits from the top down to just
+      above the operator row to form decimal numbers.
+    * Apply the operator (+ or *) to all those numbers.
+- The grand total is the sum of all per-problem results.
+
+Final answer for my input:
+  9695042567249
+
+
+RUST (debug / dev profile, no RUSTFLAGS)
+----------------------------------------
+Output:
+  9695042567249
+Timing:
+  Time: 1.261 ms   (initial debug run)
+
+
+RUST (RUSTFLAGS="-C target-cpu=native", --release, with Rayon stress test)
+---------------------------------------------------------------------------
+Output:
+  9695042567249
+
+Single run timing (optimized):
+  Time: 0.255 ms   (first optimized run)
+  Time: 0.268 ms   (optimized run with Rayon main and stress test)
+
+CPU stress test (parallel via Rayon):
+  Setup:
+    10,000 tasks (each solving the full Day 6.2 worksheet)
+  Output:
+    dummy sum: 96950425672490000
+  Timing:
+    Parallel time (10000 tasks): 214.111 ms
+
+
+MOJO (WSL, cephalopod column-wise parsing & evaluation)
+-------------------------------------------------------
+Output:
+  9695042567249
+
+Single run timing:
+  Single run time (Mojo, Day 6.2): 0.641222000012931 ms
+
+CPU stress test:
+  Iterations: 1000
+  Dummy sum: 9695042567249000
+  Total time: 615.4500669999834 ms
+  Average per run: 0.6154500669999834 ms
+
+
+PYTHON + QISKIT (classical + toy cephalopod vertical puzzle circuit)
+--------------------------------------------------------------------
+Output:
+  9695042567249
+
+Classical solve timing (full AoC computation in Python):
+  Classical time: 10.061 ms
+
+Toy cephalopod vertical puzzle circuit:
+  - col_0, col_1, col_2 represent three digit-columns, each as a qubit.
+  - op qubit represents “operation active”.
+  - flag qubit is flipped if any column AND op are active.
+  - This is only a structural demonstration, not a full arithmetic circuit.
+
+ASCII diagram (text output):
+       ┌───┐
+col_0: ┤ X ├──■───────────────
+       ├───┤  │
+col_1: ┤ X ├──┼────■──────────
+       ├───┤  │    │
+col_2: ┤ X ├──┼────┼────■─────
+       ├───┤  │    │    │
+   op: ┤ X ├──■────■────■─────
+       └───┘┌─┴─┐┌─┴─┐┌─┴─┐┌─┐
+ flag: ─────┤ X ├┤ X ├┤ X ├┤M├
+            └───┘└───┘└───┘└╥┘
+  c: 1/═════════════════════╩═
+                            0
+
+Simulator timing (puzzle circuit only):
+  Top measurement results:
+    [('1', 1024)]
+  Simulator time: 22.114 ms

@@ -1,0 +1,79 @@
+AoC 2025 - Day 6 Part 1 Timing Summary
+
+Story / Problem (Trash Compactor - Cephalopod Math):
+----------------------------------------------------
+The worksheet is a wide "grid" of characters. Each math problem is drawn
+vertically:
+
+- Each problem occupies a contiguous block of columns.
+- Inside each block, rows above hold decimal numbers (aligned arbitrarily).
+- The last row that contains '+' or '*' is the operator row.
+- Problems are separated by one or more completely-blank columns.
+- For each problem:
+    * Collect all numbers in that column block (above the operator row).
+    * Apply the operator (+ = sum, * = product).
+- The grand total is the sum of all per-problem results.
+
+Final answer for my input:
+  5060053676136
+
+
+RUST (debug / dev profile, no RUSTFLAGS)
+----------------------------------------
+Output:
+  5060053676136
+Timing:
+  Time: 1.477 ms   (initial debug run)
+
+
+RUST (RUSTFLAGS="-C target-cpu=native", --release, with Rayon stress test)
+---------------------------------------------------------------------------
+Output:
+  5060053676136
+
+Single run timing (optimized, with Rayon main):
+  Time: 0.319 ms
+
+CPU stress test (parallel via Rayon):
+  Setup:
+    10,000 tasks (each solving the full Day 6.1 worksheet)
+  Output:
+    dummy sum: 50600536761360000
+  Timing:
+    Parallel time (10000 tasks): 253.677 ms
+
+
+MOJO (WSL, vertical-grid parsing & evaluation)
+----------------------------------------------
+Output:
+  5060053676136
+
+Single run timing:
+  Single run time (Mojo, Day 6.1): 0.6863169999178353 ms
+
+CPU stress test:
+  Iterations: 1000
+  Dummy sum: 5060053676136000
+  Total time: 647.7663480000047 ms
+  Average per run: 0.6477663480000047 ms
+
+
+PYTHON + QISKIT (classical + toy vertical-problem puzzle circuit)
+------------------------------------------------------------------
+Output:
+  5060053676136
+
+Classical solve timing (full AoC computation in Python):
+  Classical time: 11.582 ms
+
+Toy vertical-problem puzzle circuit:
+  - Represents three vertical numbers plus an operator qubit, and a flag.
+  - num_0, num_1, num_2 all set to |1> to indicate “numbers present”.
+  - op qubit set to |1> (e.g. meaning multiplication).
+  - flag qubit is flipped if any num qubit is 1 (OR-like structure).
+  - This circuit is an abstract structural encoding, not a real arithmetic circuit.
+
+Simulator timing (puzzle circuit only):
+  Top measurement results:
+    [('1', 1024)]
+  Simulator time: 18.225 ms
