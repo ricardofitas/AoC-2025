@@ -1,0 +1,36 @@
+Advent of Code 2025 - Day 7 Part 2
+Quantum Tachyon Manifold - Many-Worlds Timelines
+
+Final answer: 5748679033029
+
+
+[Rust]
+
+1) Debug build (cargo run)
+   - Time: 0.843 ms
+
+2) Release build, CPU-tuned (RUSTFLAGS="-C target-cpu=native"; cargo run --release)
+   - Time: 0.215 ms
+
+3) Release + Rayon stress test (10 000 runs in parallel)
+   - Single run time (inside Rayon version): 0.252 ms
+   - dummy sum: 57486790330290000
+   - Parallel time (10000 tasks): 152.061 ms
+
+
+[Qiskit]
+
+- Classical (pure Python) solve time: 1.498 ms
+- Puzzle circuit:
+  - Toy quantum splitter-chain puzzle encoding the "branching" structure
+  - Top measurement result: ('1', 523), ('0', 501)
+- Simulator time: 30.263 ms
+
+
+[Mojo]
+
+- Single run time (Mojo, Day 7.2): 0.4291039949748665 ms
+- Dummy sum: 5748679033029000
+- Stress test:
+  - 1000 iterations in 267.92195699817967 ms
+  - Average per run: 0.26792195699817967 ms
