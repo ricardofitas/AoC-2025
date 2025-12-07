@@ -1,0 +1,127 @@
+AoC 2025 - Day 7 Part 1 Timing Summary
+
+Story / Problem (Laboratories - Tachyon Manifold):
+-------------------------------------------------
+A tachyon beam enters a manifold grid at 'S' and moves downward:
+
+- Grid characters:
+    * 'S'  : starting position of the beam (beam initially moves downward).
+    * '.'  : empty space; beam passes through, continuing downward.
+    * '^'  : splitter; when a beam enters this cell from above:
+        - the incoming beam stops.
+        - two new beams are spawned on the same row, at columns (c-1) and (c+1),
+          if in bounds; they then continue downward.
+- Beams that go below the last row exit the manifold.
+- If multiple beams ever reach the same cell, only the first one is processed;
+  further beams are skipped to avoid double-counting and redundant work.
+- We count a "split" every time a beam enters a '^' cell from above for the
+  first time.
+
+Goal:
+- Simulate all beam paths and count the total number of beam splits.
+- Final answer for my input: 1587
+
+
+RUST (debug / dev profile, no RUSTFLAGS)
+----------------------------------------
+Command:
+  cargo run
+
+Output:
+  1587
+
+Timing (first debug run):
+  Time: 0.516 ms
+
+
+RUST (RUSTFLAGS="-C target-cpu=native", --release)
+---------------------------------------------------
+Command:
+  $env:RUSTFLAGS="-C target-cpu=native"
+  cargo run --release
+
+Single run timing (first optimized run):
+  1587
+  Time: 0.116 ms
+
+With Rayon stress test (10,000 tasks):
+  Output:
+    1587
+    Time: 0.129 ms   (single run in optimized build with Rayon main)
+    dummy sum: 15870000
+    Parallel time (10000 tasks): 112.508 ms
+
+Notes:
+- `dummy sum` is just 1587 * 10000, used to force evaluation in the parallel map.
+- The parallel timing measures running the full solver 10,000 times with Rayon.
+
+
+MOJO (WSL, tachyon manifold simulation)
+---------------------------------------
+Command:
+  cd ~/aoc-2025/day7_1
+  source ../day1/.venv/bin/activate
+  mojo run day7_1.mojo
+
+Output:
+  1587
+
+Single run timing:
+  Single run time (Mojo, Day 7.1): 0.6958279991522431 ms
+
+Stress test:
+  Iterations: 1000
+  Dummy sum: 1587000
+  Total time: 289.89201301010326 ms
+  Average per run: 0.28989201301010326 ms
+
+
+PYTHON + QISKIT (classical + toy splitter-manifold circuit)
+-----------------------------------------------------------
+Command:
+  cd "C:\Users\ricar\OneDrive\Documentos\AoC-2025\Day 7.1"
+  python day7_1_qiskit.py
+
+Classical solver:
+  Output:
+    1587
+  Timing:
+    Classical time: 10.797 ms
+
+Toy splitter manifold puzzle circuit:
+  - beam_in: qubit indicating a beam arriving from above.
+  - split  : qubit indicating presence of a splitter.
+  - left   : outgoing left-beam qubit.
+  - right  : outgoing right-beam qubit.
+  - flag   : becomes 1 if a valid split occurs (beam_in AND split).
+
+ASCII diagram (as printed by Qiskit):
+
+         ┌───┐
+beam_in: ┤ X ├──■────■─────────────────────
+         ├───┤  │    │
+  split: ┤ X ├──■────■─────────────────────
+         └───┘┌─┴─┐  │            ┌─┐
+   left: ─────┤ X ├──┼────■───────┤M├──────
+              └───┘┌─┴─┐  │       └╥┘┌─┐
+  right: ──────────┤ X ├──┼────■───╫─┤M├───
+                   └───┘┌─┴─┐┌─┴─┐ ║ └╥┘┌─┐
+   flag: ───────────────┤ X ├┤ X ├─╫──╫─┤M├
+                        └───┘└───┘ ║  ║ └╥┘
+    c: 3/══════════════════════════╩══╩══╩═
+                                   0  1  2
+
+Toy circuit simulation:
+  Top measurement results (puzzle circuit): [('011', 1024)]
+  Simulator time: 27.557 ms
+
+Notes:
+- The Qiskit circuit is illustrative only; it does not simulate the full AoC
+  manifold. It demonstrates how a splitter takes one incoming beam and
+  produces two outgoing beams plus a "split occurred" flag.
+
+Summary:
+- Final manifold split count (Day 7 Part 1): 1587
+- Rust (release, native): ~0.12 ms per solve
+- Mojo: ~0.70 ms single run, ~0.29 ms average in stress test
+- Python+Qiskit classical: ~10.8 ms for the same input
