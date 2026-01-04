@@ -1,0 +1,51 @@
+AoC 2025 - Day 11 Part 2 Timing Summary
+
+RUST (debug / dev profile, no RUSTFLAGS)
+----------------------------------------
+Output:
+  290219757077250
+Timing:
+  Time: 1.650 ms
+
+RUST (RUSTFLAGS="-C target-cpu=native", --release)
+--------------------------------------------------
+Output:
+  290219757077250
+Timing:
+  Time: 0.265 ms   (earlier run)
+  Time: 0.271 ms   (latest run, Rayon version)
+
+RUST (CPU stress test with Rayon, --release)
+--------------------------------------------
+Setup:
+  10,000 tasks (copies of the answer) in parallel
+Output:
+  dummy sum: 2902197570772500000
+Timing:
+  Time: 0.254 ms
+  Parallel time (10000 tasks): 2.014 ms
+
+
+PYTHON + QISKIT (classical + simulator)
+---------------------------------------
+Output:
+  290219757077250
+Classical solve timing:
+  Classical time: 0.900 ms
+
+Qiskit simulator timing (toy circuit):
+  Top measurement results: [('1', 1024)]
+  Simulator time: 14.028 ms
+
+
+MOJO (WSL, Python-interop implementation, Part 2)
+-------------------------------------------------
+Output:
+  290219757077250
+Single run timing:
+  Single run time (Mojo, Day 11.2): 1.8803350030793808 ms
+
+CPU stress test:
+  Dummy sum: 58043951415450000
+  Stress test (Day 11.2): 200 iterations in 0.05324999801814556 ms
+  Average per run: 0.0002662499900907278 ms
